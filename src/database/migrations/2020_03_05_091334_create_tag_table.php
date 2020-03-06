@@ -29,6 +29,8 @@ class CreateTagTable extends Migration
             $table->tinyInteger('nsfw')->default(0);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index(['id', 'name']);
         });
     }
 

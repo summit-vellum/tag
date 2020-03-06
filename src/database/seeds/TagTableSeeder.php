@@ -14,7 +14,7 @@ class TagTableSeeder extends Seeder
     {
     	$old_db = DB::connection('olddb');
 
-    	$itemsPerBatch = 50;
+    	$itemsPerBatch = 500;
 
     	$tags = $old_db->table('tbl_tags');
 
