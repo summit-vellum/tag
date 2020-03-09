@@ -2,6 +2,7 @@
 
 namespace Quill\Tag\Http\Controllers;
 
+use Quill\Tag\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Vellum\Contracts\Resource;
@@ -13,6 +14,31 @@ class TagController extends Controller
     public function __construct(Resource $resource)
     {
         $this->tag = $resource;
+    }
+
+    public function api(Tag $tag, Request $request)
+    {
+    	$limit = $request->input('limit', 10);
+		$keyword = $request->input('q', false);
+		$invisible = $request->input('invisible', 0);
+
+		$data = $tag->whereValid();
+		if ($keyword) {
+			$data = $data->where('name', 'like', '%'.$keyword.'%')->orderByCount();
+		}
+
+		if ($invisible) {
+			$data = $data->whereInvisible();
+		} else {
+			$data = $data->whereVisible();
+		}
+
+		if ($limit) {
+			$data = $data->take($limit)->get()->toArray();
+		}
+
+
+		return response()->json(['data'=>$data]);
     }
 
     /**

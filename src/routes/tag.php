@@ -13,6 +13,6 @@
 
 Route::group(['middleware' => 'web'], function() {
 
-    // ... Route logic goes here
+    Route::get('tag/api', '\Quill\Tag\Http\Controllers\TagController@api');
 
 });
