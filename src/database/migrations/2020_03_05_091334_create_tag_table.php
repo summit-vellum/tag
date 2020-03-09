@@ -20,7 +20,7 @@ class CreateTagTable extends Migration
             $table->text('meta_title')->nullable();
             $table->text('meta_keyword')->nullable();
             $table->text('meta_description')->nullable();
-            $table->integer('count');
+            $table->integer('count')->default(0);
             $table->tinyInteger('status')->comment('1=active; 0=inactive')->default(1);
             $table->tinyInteger('is_visible')->comment('1=visible; 0=invisible');
             $table->tinyInteger('type')->default(1);

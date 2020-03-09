@@ -9,6 +9,16 @@ class Tag extends BaseModel
 
     protected $table = 'tags';
 
+    public function scopeWhereName($query, $name)
+	{
+		return $query->where('name', '=', $name);
+	}
+
+	public function scopeWhereNameLike($query, $name)
+	{
+		return $query->where('name', 'like', '%'.$name.'%');
+	}
+
     public function scopeWhereValid($query)
 	{
 		return $query->whereActive();
@@ -19,14 +29,9 @@ class Tag extends BaseModel
 		return $query->where('status', 1);
 	}
 
-	public function scopeWhereInvisible($query)
+	public function scopeWhereIsVisible($query, $visible)
 	{
-		return $query->where('is_visible', '=', 0);
-	}
-
-	public function scopeWhereVisible($query)
-	{
-		return $query->where('is_visible', '=', 1);
+		return $query->where('is_visible', '=', $visible);
 	}
 
 	public function scopeOrderByCount($query, $order = 'DESC')

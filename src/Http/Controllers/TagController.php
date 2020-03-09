@@ -20,23 +20,16 @@ class TagController extends Controller
     {
     	$limit = $request->input('limit', 10);
 		$keyword = $request->input('q', false);
-		$invisible = $request->input('invisible', 0);
+		$visibility = $request->input('visibility', 1);
 
 		$data = $tag->whereValid();
 		if ($keyword) {
-			$data = $data->where('name', 'like', '%'.$keyword.'%')->orderByCount();
-		}
-
-		if ($invisible) {
-			$data = $data->whereInvisible();
-		} else {
-			$data = $data->whereVisible();
+			$data = $data->whereNameLike($keyword)->whereIsVisible($visibility)->orderByCount();
 		}
 
 		if ($limit) {
 			$data = $data->take($limit)->get()->toArray();
 		}
-
 
 		return response()->json(['data'=>$data]);
     }
