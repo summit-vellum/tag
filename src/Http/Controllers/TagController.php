@@ -18,9 +18,12 @@ class TagController extends Controller
 
     public function api(Tag $tag, Request $request)
     {
+    	$fields = $request->input('fields');
     	$limit = $request->input('limit', 10);
 		$keyword = $request->input('q', false);
 		$visibility = $request->input('visibility', 1);
+
+		$fields = explode(',', $fields);
 
 		$data = $tag->whereValid();
 		if ($keyword) {
@@ -28,7 +31,9 @@ class TagController extends Controller
 		}
 
 		if ($limit) {
-			$data = $data->take($limit)->get()->toArray();
+			$data = $data->take($limit)->get()->map(function($item) use ($fields) {
+	            return collect($item)->only($fields);
+	        })->toArray();
 		}
 
 		return response()->json(['data'=>$data]);
